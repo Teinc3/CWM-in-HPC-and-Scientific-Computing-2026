@@ -79,7 +79,7 @@ int main( void ) {
   uo[ n - 1 ] = 0.0;
 
   /* Initial values to be solved on the grid */
-  /* ... */
+  # pragma omp parallel for private(j) shared (n, u)
   for( j = 1; j < n - 1; j++ ){
     u[ j ] = sin( j * PI / L );
   }
@@ -144,7 +144,7 @@ int main( void ) {
 
   /* Check the solution against the exact, analytic answer */
   rms = 0.0;
-  /* ... */
+  # pragma omp parallel for default(shared) private(j, du) reduction(+:rms)
     for (j=1; j<n-1; j++) {
       du = u[ j ] - sin( j * PI / L ) *  exp( - n_time_steps * nu * PI * PI / ( L * L ) );
       rms += du*du;
