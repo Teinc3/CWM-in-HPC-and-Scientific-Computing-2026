@@ -32,13 +32,18 @@ double f (double x) {
 
 double trapInt_OMP (double a, double b, int N) {
 
-  int    n;                      // interval iterator
-  double h;                      // interval length
-  double v;                      // integral value
-  double x;                      // integral variable
+  int n = 0;                      // interval iterator
+  double h = (b - a) / N;                      // interval length
+  double v = 0;                      // integral value
 
   // complete the body of the function
-  // ... //
+  #pragma omp parallel shared(a, b, N, h, v) private(n)
+  {
+    #pragma omp for reduction(+:v)
+    for (n = 0; n < N; n++) {
+      v = v + 0.5 * (f(a + h * n) + f(a + h * (n + 1))) * h;
+    }
+  }
 
   return v;
 }
