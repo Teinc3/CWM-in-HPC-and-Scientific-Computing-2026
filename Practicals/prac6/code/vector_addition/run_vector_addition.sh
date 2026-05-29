@@ -11,10 +11,7 @@
 # set name of job
 #SBATCH --job-name=vectoradd
 
-# Use our reservation
-#SBATCH --reservation=250620-cwm
-
 module purge
-module load CUDA
+module load CUDA/11.4.1-GCC-10.3.0
 
 ./vectoradd
